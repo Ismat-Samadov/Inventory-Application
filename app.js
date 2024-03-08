@@ -1,3 +1,4 @@
+require('dotenv').config();
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -21,8 +22,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // MongoDB connection
-const mongoDB = "mongodb+srv://tusharsandhu:Learn2023@cluster0.iz9qxku.mongodb.net/productsDB?retryWrites=true&w=majority";
-mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true })
+// const mongoDB = "mongodb+srv://admin:admin@cluster0.pg4vlgs.mongodb.net/";
+const mongoDB = process.env.MONGODB_URI;
+
+mongoose.connect(mongoDB)
   .then(() => console.log("Connected to MongoDB"))
   .catch(err => console.error("Failed to connect to MongoDB", err));
 
