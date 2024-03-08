@@ -3,9 +3,10 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const mongoose = require('mongoose');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var productsRouter = require('./routes/products');
 
 var app = express();
 
@@ -19,8 +20,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// MongoDB connection
+const mongoDB = "mongodb+srv://tusharsandhu:Learn2023@cluster0.iz9qxku.mongodb.net/productsDB?retryWrites=true&w=majority";
+mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log("Connected to MongoDB"))
+  .catch(err => console.error("Failed to connect to MongoDB", err));
+
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/shop', productsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -37,5 +44,18 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.title = 'Error'; // Set the title variable for the error page
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
+
 
 module.exports = app;

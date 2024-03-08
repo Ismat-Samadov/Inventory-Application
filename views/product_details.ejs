@@ -1,0 +1,30 @@
+<%- include('layout') %>
+
+<% block content %>
+    <div class="product-details">
+        <% if (product_information) { %>
+            <img src="<%= product_information.image %>">
+            <div class="details-info">
+                <h1><%= product_information.name %></h1>
+                <p><%= product_information.brand %></p>
+                <p>Rating: <%= product_information.rating %></p>
+                <p>Categories</p>
+                <ul>
+                    <% product_information.categories.forEach(function(category) { %>
+                        <li><%= category.name %></li>
+                    <% }); %>
+                </ul>
+                <% if (!product_information.in_stock) { %>
+                    <p class="no-stock">OUT OF STOCK</p>
+                <% } %>
+                <h3>Price: $<%= product_information.price %></h3>
+            </div>
+        <% } else { %>
+            <p>Product not found</p>
+        <% } %>
+    </div>
+    <div>
+        <button><a href="<%= product_information.url + '/delete' %>">Delete</a></button>
+        <button><a href="<%= product_information.url + '/update' %>">Update</a></button>
+    </div>
+<% endblock %>

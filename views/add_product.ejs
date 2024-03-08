@@ -1,0 +1,57 @@
+<%- include('layout') %>
+
+<h1><%= title %></h1>
+
+<form class="add-product-form" method="POST">
+    <div>
+        <label for="product_name">Product Name:</label>
+        <input type="text" name="product_name" required value="<%= (typeof product === 'undefined' ? '' : product.name) %>">
+    </div>
+    <div>
+        <input type="radio" id="in_stock" name="stock_status" value="in_stock" checked>
+        <label for="in_stock">Item is in Stock</label>
+    </div>
+    <div>
+        <input type="radio" id="not_in_stock" name="stock_status" value="not_in_stock">
+        <label for="not_in_stock">Item is NOT in Stock</label>
+    </div>
+    <div>
+        <label for="price">Product Price:</label>
+        <input type="number" name="price" required value="<%= (typeof product === 'undefined' ? '' : product.price) %>">
+    </div>
+    <div>
+        <label for="image_url">Image URL:</label>
+        <input type="url" name="image_url" required value="<%= (typeof product === 'undefined' ? '' : product.image) %>">
+    </div>
+    <div>
+        <label for="brand">Brand Name:</label>
+        <input type="text" name="brand" required value="<%= (typeof product === 'undefined' ? '' : product.brand) %>">
+    </div>
+    <div>
+        <label for="rating">Product Rating:</label>
+        <input type="number" name="rating" required value="<%= (typeof product === 'undefined' ? '' : product.rating) %>">
+    </div>
+    <div style="display:grid; grid-template-columns: repeat(4, 1fr);">
+        <% categories.forEach(function(category) { %>
+            <% if (category.checked) { %>
+                <input class="checkbox-input" type="checkbox" name="category" id="<%= category._id %>" value="<%= category._id %>" checked>
+            <% } else { %>
+                <input class="checkbox-input" type="checkbox" name="category" id="<%= category._id %>" value="<%= category._id %>">
+            <% } %>
+            <label for="<%= category._id %>">&nbsp;<%= category.name %></label>
+        <% }); %>
+    </div>
+    <% if (updating) { %>
+        <button type="submit">Update</button>
+    <% } else { %>
+        <button type="submit">Add Product</button>
+    <% } %>
+</form>
+
+<% if (errors) { %>
+    <ul>
+        <% errors.forEach(function(error) { %>
+            <li><%= error.msg %></li>
+        <% }); %>
+    </ul>
+<% } %>

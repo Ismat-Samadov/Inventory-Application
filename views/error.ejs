@@ -1,0 +1,16 @@
+<%- include('layout') %>
+
+<!-- Including the layout file -->
+
+block content
+  <!-- Beginning of the content block -->
+
+  h1= message
+  <!-- Displaying the error message -->
+
+  h2= error.status
+  <!-- Displaying the error status -->
+
+  pre #{error.stack}
+  <!-- Displaying the error stack trace within a <pre> tag -->
+
