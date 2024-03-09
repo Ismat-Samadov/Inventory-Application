@@ -10,12 +10,13 @@ const categoriesRouter = require('./routes/categories');
 
 const app = express();
 
+// Set view engine to use EJS
 app.set('view engine', 'ejs');
 
+// Route to render the "index" view
 app.get('/', function(req, res) {
     res.render('index'); // Render the "index" view
 });
-
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, { 
