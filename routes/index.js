@@ -24,4 +24,16 @@ router.get('/', async function(req, res, next) {
     }
 });
 
+router.delete('/items/:id', function(req, res) {
+    Item.findByIdAndRemove(req.params.id, function(err) {
+        if (err) {
+            // handle error
+            console.log(err);
+            res.status(500).send(err);
+        } else {
+            // redirect to another page
+            res.redirect('/items');
+        }
+    });
+});
 module.exports = router;
