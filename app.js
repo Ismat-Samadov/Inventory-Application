@@ -10,6 +10,9 @@ const categoriesRouter = require('./routes/categories');
 
 const app = express();
 
+app.set('view engine', 'ejs');
+
+
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, { 
   useNewUrlParser: true,
