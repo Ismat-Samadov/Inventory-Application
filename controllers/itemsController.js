@@ -1,3 +1,4 @@
+//itemsController.js is the controller for handling item-related operations such as creating, fetching, updating, and deleting items. It uses the Item model to interact with the database.
 const Item = require('../models/item');
 
 // Controller to create a new item
@@ -70,3 +71,46 @@ exports.deleteItem = async (req, res, next) => {
         res.status(500).json({ error: 'Failed to delete item' });
     }
 };
+// Custom Error class
+class ErrorHandler extends Error {
+    constructor(statusCode, message) {
+        super();
+        this.statusCode = statusCode;
+        this.message = message;
+    }
+}
+
+// Controller to retrieve an item by its ID
+exports.getItemById = async (req, res, next) => {
+    try {
+        const itemId = req.params.id;
+        const item = await Item.findById(itemId);
+        if (!item) {
+            throw new ErrorHandler(404, 'Item not found');
+        }
+        res.json(item);
+    } catch (err) {
+        next(err);
+    }
+};
+
+// Controller to delete an existing item
+exports.deleteItem = async (req, res, next) => {
+    try {
+        const itemId = req.params.id;
+        const deletedItem = await Item.findByIdAndDelete(itemId);
+        if (!deletedItem) {
+            throw new ErrorHandler(404, 'Item not found');
+        }
+        res.json(deletedItem);
+    } catch (err) {
+        next(err);
+    }
+};
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    const statusCode = err.statusCode || 500;
+    const message = err.message || 'Internal Server Error';
+    res.status(statusCode).json({ error: message });
+});
