@@ -14,13 +14,5 @@ const itemSchema = new mongoose.Schema({
   imageURL: String
 });
 
-itemSchema.pre('save', async function(next) {
-  const self = this;
-  const existingItem = await self.constructor.findOne({ name: self.name });
-  if (existingItem) {
-    self.name += '_1';
-  }
-  next();
-});
 
 module.exports = mongoose.model('Item', itemSchema);
