@@ -2,11 +2,16 @@
 const mongoose = require('mongoose');
 const Item = require('./models/item');
 const Category = require('./models/category');
+require('dotenv').config();
 
 // Connect to MongoDB
-mongoose.connect('mongodb://127.0.0.1/inventory_app', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGODB_URI, { 
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
   .then(() => {
     console.log('Connected to MongoDB');
+
     // Populate categories
     Category.create([
       { name: 'Sedans', description: 'Four-door cars' },
