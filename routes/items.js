@@ -1,27 +1,27 @@
 // routes/items.js
-
+const itemsController = require('../controllers/itemsController');
 const express = require('express');
 const router = express.Router();
-const itemsController = require('../controllers/itemsController');
+const Item = require('../models/item');
 
+// Handle POST request to create a new item
 router.post('/', function(req, res, next) {
-  // Extract data from the request body
-  const newItem = req.body;
+    // Extract data from the request body
+    const newItemData = req.body;
 
-  // Perform any necessary operations (e.g., save to database)
-  // Example: Save the new item to the database
-  Item.create(newItem)
-    .then(item => {
-      // Send a success response
-      res.status(201).json({ message: 'Item created successfully', item });
-    })
-    .catch(err => {
-      // Handle errors
-      console.error('Error creating item:', err);
-      res.status(500).json({ message: 'Internal server error' });
-    });
+    // Create a new item using the data
+    const newItem = new Item(newItemData);
+
+    // Save the new item to the database
+    newItem.save()
+        .then(savedItem => {
+            res.status(201).json(savedItem); // Send a success response with the saved item
+        })
+        .catch(err => {
+            console.error('Error saving item:', err);
+            res.status(500).json({ error: 'Failed to save item' }); // Send an error response if saving fails
+        });
 });
-
 
 // Create
 router.post('/', itemsController.createItem);
