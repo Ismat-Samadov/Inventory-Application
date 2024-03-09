@@ -12,6 +12,10 @@ const app = express();
 
 app.set('view engine', 'ejs');
 
+app.get('/', function(req, res) {
+    res.render('index'); // Render the "index" view
+});
+
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, { 
