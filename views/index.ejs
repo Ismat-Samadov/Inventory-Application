@@ -1,39 +1,30 @@
 <!-- views/index.ejs -->
 
+<!-- /app/views/index.ejs -->
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to the Inventory Application</title>
+    <title>Inventory Application</title>
 </head>
-
 <body>
     <h1>Welcome to the Inventory Application</h1>
-    
+    <p>This is the homepage.</p>
+
     <!-- Display Items -->
     <ul>
-        <% items.forEach(function(item) { %>
-            <li>
-                <%= item.name %> - <%= item.description %> - <%= item.price %>
-                <a href="/items/<%= item._id %>">View</a>
-                <a href="/items/<%= item._id %>/edit">Edit</a>
-                <form action="/items/<%= item._id %>" method="POST" style="display: inline;">
-                    <input type="hidden" name="_method" value="DELETE">
-                    <button type="submit">Delete</button>
-                </form>
-            </li>
-        <% }); %>
+        <% if (items && items.length) { %>
+            <% items.forEach(function(item) { %>
+                <li>
+                    <%= item.name %> - <%= item.description %> - <%= item.price %>
+                    <a href="/items/<%= item._id %>">View</a>
+                </li>
+            <% }) %>
+        <% } else { %>
+            <li>No items found</li>
+        <% } %>
     </ul>
-
-    <!-- Create Item Form -->
-    <form action="/items" method="POST">
-        <input type="text" name="name" placeholder="Item Name">
-        <input type="text" name="description" placeholder="Description">
-        <input type="number" name="price" placeholder="Price">
-        <button type="submit">Add Item</button>
-    </form>
 </body>
-
 </html>
