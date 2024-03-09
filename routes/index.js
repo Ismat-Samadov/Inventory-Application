@@ -2,22 +2,20 @@
 
 const express = require('express');
 const router = express.Router();
-const Item = require('../models/item'); // Assuming your item model is defined in 'item.js'
+const Item = require('../models/item'); // Assuming this is your Item model
 
-// Handle GET request for the homepage
-router.get('/', async (req, res, next) => {
+router.get('/', async (req, res) => {
     try {
-        // Query the database for items
+        // Fetch items from the database
         const items = await Item.find();
 
-        // Render the 'index' view and pass the items to the template
+        // Render the index view with the items data
         res.render('index', { items: items });
-    } catch (err) {
+    } catch (error) {
         // Handle errors
-        console.error('Error retrieving items:', err);
-        next(err);
+        console.error('Error fetching items:', error);
+        res.status(500).send('Internal Server Error');
     }
 });
 
 module.exports = router;
-
