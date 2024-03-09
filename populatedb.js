@@ -1,33 +1,32 @@
 // populatedb.js
+const mongoose = require('mongoose');
 const Item = require('./models/item');
 const Category = require('./models/category');
 
-// Populate categories
-const categories = [
-  { name: 'Sedans', description: 'Four-door cars', imageURL: '/images/sedans.jpg' },
-  { name: 'SUVs', description: 'Sport Utility Vehicles', imageURL: '/images/suvs.jpg' },
-  // Add more categories as needed
-];
-
-Category.create(categories, (err, results) => {
-  if (err) {
-    console.error('Error populating categories:', err);
-  } else {
-    console.log('Categories populated successfully:', results);
-  }
-});
-
-// Populate items
-const items = [
-  { name: 'Toyota Camry', description: 'Reliable sedan', category: 'Sedans', price: 25000, numberInStock: 10, imageURL: '/images/camry.jpg' },
-  { name: 'Honda CR-V', description: 'Popular SUV', category: 'SUVs', price: 30000, numberInStock: 8, imageURL: '/images/crv.jpg' },
-  // Add more items as needed
-];
-
-Item.create(items, (err, results) => {
-  if (err) {
-    console.error('Error populating items:', err);
-  } else {
-    console.log('Items populated successfully:', results);
-  }
-});
+// Connect to MongoDB
+mongoose.connect('mongodb://127.0.0.1/inventory_app', { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log('Connected to MongoDB');
+    // Populate categories
+    Category.create([
+      { name: 'Sedans', description: 'Four-door cars' },
+      { name: 'SUVs', description: 'Sport Utility Vehicles' }
+      // Add more categories as needed
+    ])
+      .then(categories => {
+        console.log('Categories populated:', categories);
+        // Populate items
+        Item.create([
+          { name: 'Toyota Camry', description: 'Reliable sedan', category: categories[0]._id, price: 25000, numberInStock: 10 },
+          { name: 'Honda CR-V', description: 'Popular SUV', category: categories[1]._id, price: 30000, numberInStock: 8 }
+          // Add more items as needed
+        ])
+          .then(items => {
+            console.log('Items populated:', items);
+            mongoose.connection.close();
+          })
+          .catch(err => console.error('Error populating items:', err));
+      })
+      .catch(err => console.error('Error populating categories:', err));
+  })
+  .catch(err => console.error('Error connecting to MongoDB:', err));
