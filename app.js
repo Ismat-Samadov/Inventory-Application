@@ -2,13 +2,17 @@ const express = require('express');
 const path = require('path');
 const logger = require('morgan');
 const mongoose = require('mongoose');
-require('dotenv').config(); // Load environment variables from .env file
+require('dotenv').config();
 
 const indexRouter = require('./routes/index');
 const itemsRouter = require('./routes/items');
 const categoriesRouter = require('./routes/categories');
 
 const app = express();
+
+// Set the views directory
+app.set('views', path.join(__dirname, 'views'));
+
 
 // Set view engine to use EJS
 app.set('view engine', 'ejs');
