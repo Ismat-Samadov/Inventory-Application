@@ -1,3 +1,4 @@
+// app.js
 const express = require('express');
 const path = require('path');
 const logger = require('morgan');
@@ -15,11 +16,6 @@ app.set('views', path.join(__dirname, 'views'));
 
 // Set view engine to use EJS
 app.set('view engine', 'ejs');
-
-// Route to render the "index" view
-app.get('/', function(req, res) {
-    res.render('index'); 
-});
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, { 
