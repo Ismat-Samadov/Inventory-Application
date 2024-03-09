@@ -4,6 +4,10 @@ const express = require('express');
 const router = express.Router();
 const itemsController = require('../controllers/itemsController');
 
+router.post('/', function(req, res, next) {
+  // Handle POST request logic here
+});
+
 // Create
 router.post('/', itemsController.createItem);
 
