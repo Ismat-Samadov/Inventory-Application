@@ -1,2 +1,0 @@
-# Inventory-Application
-Odin Project
