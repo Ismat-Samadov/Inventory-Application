@@ -2,7 +2,10 @@
 const mongoose = require('mongoose');
 
 const itemSchema = new mongoose.Schema({
-  name: String,
+  name: {
+    type: String,
+    unique: true // Ensures the name is unique
+  },
   description: String,
   category: String,
   price: Number,
