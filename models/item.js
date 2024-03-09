@@ -5,7 +5,7 @@ const itemSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    unique: true // Ensure uniqueness of the name field
+    unique: true 
   },
   description: String,
   category: String,
@@ -14,7 +14,6 @@ const itemSchema = new mongoose.Schema({
   imageURL: String
 });
 
-// Middleware to append "_1" to the name if it already exists
 itemSchema.pre('save', async function(next) {
   const self = this;
   const existingItem = await self.constructor.findOne({ name: self.name });

@@ -18,7 +18,7 @@ app.set('view engine', 'ejs');
 
 // Route to render the "index" view
 app.get('/', function(req, res) {
-    res.render('index'); // Render the "index" view
+    res.render('index'); 
 });
 
 // Connect to MongoDB
