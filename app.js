@@ -13,7 +13,6 @@ const app = express();
 // Set the views directory
 app.set('views', path.join(__dirname, 'views'));
 
-
 // Set view engine to use EJS
 app.set('view engine', 'ejs');
 

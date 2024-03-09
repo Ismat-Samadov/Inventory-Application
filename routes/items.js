@@ -1,8 +1,19 @@
 // routes/items.js
+
 const express = require('express');
 const router = express.Router();
-const Item = require('../models/item');
+const itemsController = require('../controllers/itemsController');
 
-// Define routes for CRUD operations
+// Create
+router.post('/', itemsController.createItem);
+
+// Read
+router.get('/:id', itemsController.getItemById);
+
+// Update
+router.put('/:id', itemsController.updateItem);
+
+// Delete
+router.delete('/:id', itemsController.deleteItem);
 
 module.exports = router;
