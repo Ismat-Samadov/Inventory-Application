@@ -3,6 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const Item = require('../models/item'); // Import the Item model
+const mongoose = require('mongoose');
 
 // Route handler for the homepage
 router.get('/', async function(req, res, next) {
@@ -24,16 +25,31 @@ router.get('/', async function(req, res, next) {
     }
 });
 
-router.delete('/items/:id', function(req, res) {
-    Item.findByIdAndRemove(req.params.id, function(err) {
-        if (err) {
-            // handle error
-            console.log(err);
-            res.status(500).send(err);
-        } else {
-            // redirect to another page
-            res.redirect('/items');
+
+router.delete('/items/:id', async function(req, res, next) {
+    console.log('Deleting item with ID:', req.params.id); // Log the ID
+
+    let id;
+    try {
+        id = new mongoose.Types.ObjectId(req.params.id);
+    } catch (err) {
+        return res.status(400).json({ success: false, error: 'Invalid ID format' });
+    }
+
+    try {
+        const deletedItem = await Item.findOneAndDelete({ _id: id });
+
+        if (!deletedItem) {
+            console.log('No item found with this ID');
+            return res.status(404).json({ success: false, error: 'No item found with this ID' });
         }
-    });
+
+        console.log('Deleted item:', deletedItem); // Log the deleted item
+        res.json({ success: true });
+    } catch (error) {
+        next(error); // Pass the error to the error-handling middleware
+    }
 });
+
+
 module.exports = router;

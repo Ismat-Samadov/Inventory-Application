@@ -20,10 +20,7 @@
                     <%= item.name %> - <%= item.description %> - <%= item.price %>
                     <a href="/items/<%= item._id %>">View</a>
                     <a href="/items/<%= item._id %>/edit">Edit</a>
-                    <form action="/items/<%= item._id %>" method="POST" style="display: inline;">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <button type="submit">Delete</button>
-                    </form>
+                    <button class="delete-button" data-id="<%= item._id %>">Delete</button>
                 </li>
             <% }); %>
         <% } else { %>
@@ -38,6 +35,32 @@
         <input type="number" name="price" placeholder="Price">
         <button type="submit">Add Item</button>
     </form>
+
+    <script>
+        document.querySelectorAll('.delete-button').forEach(function(button) {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                fetch('/items/' + e.target.dataset.id, {
+                    method: 'DELETE',
+                    headers: {
+                 'Content-Type': 'application/json',
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        console.error('Error:', data.error);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

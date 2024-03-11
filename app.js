@@ -58,3 +58,10 @@ app.use((err, req, res, next) => {
 });
 module.exports = app;
 
+
+
+// Error-handling middleware
+app.use(function (err, req, res, next) {
+    console.error('Error:', err.stack);
+    res.status(500).json({ success: false, error: err.stack });
+});
