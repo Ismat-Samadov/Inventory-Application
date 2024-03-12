@@ -19,6 +19,7 @@ router.get('/', async function(req, res, next) {
 
         // Render the index view with the items
         res.render('index', { items: items }); 
+        res.redirect('/');
     } catch (error) {
         console.error("Error in route handler:", error);
         next(error);
@@ -38,7 +39,6 @@ router.delete('/items/:id', async function(req, res, next) {
 
     try {
         const deletedItem = await Item.findOneAndDelete({ _id: id });
-        res.redirect('/');
         if (!deletedItem) {
             console.log('No item found with this ID');
             return res.status(404).json({ success: false, error: 'No item found with this ID' });
