@@ -19,7 +19,7 @@ router.get('/', async function(req, res, next) {
 
         // Render the index view with the items
         res.render('index', { items: items }); 
-        
+        res.redirect('/');
     } catch (error) {
         console.error("Error in route handler:", error);
         next(error);
